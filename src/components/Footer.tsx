@@ -102,7 +102,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
                 </a>
                 <div className="flex space-x-2 pt-2">
                   <a
-                    href="https://github.com/prinssayja"
+                    href="https://github.com/prinssayja01"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`transition-all transform hover:scale-110 p-2 rounded-lg ${
@@ -114,7 +114,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
                     <Github size={24} />
                   </a>
                   <a
-                    href="https://linkedin.com/in/prinssayja"
+                    href="https://www.linkedin.com/in/connect-with-prins-sayja/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`transition-all transform hover:scale-110 p-2 rounded-lg ${
