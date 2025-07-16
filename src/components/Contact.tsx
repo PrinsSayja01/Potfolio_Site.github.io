@@ -88,7 +88,7 @@ const Contact: React.FC<ContactProps> = ({ darkMode }) => {
                   </div>
                   <div>
                     <h4 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>LinkedIn</h4>
-                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>linkedin.com/in/prinssayja</p>
+                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>linkedin.com/in/connect-with-prins-sayja</p>
                   </div>
                 </div>
 
@@ -98,7 +98,7 @@ const Contact: React.FC<ContactProps> = ({ darkMode }) => {
                   </div>
                   <div>
                     <h4 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>GitHub</h4>
-                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>github.com/prinssayja</p>
+                    <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>github.com/prinssayja01</p>
                   </div>
                 </div>
 
