@@ -24,8 +24,8 @@ const Projects: React.FC<ProjectsProps> = ({ darkMode }) => {
       tech: ['Python', 'NLP', 'SpaCy', 'Scikit-learn', 'Machine Learning'],
       icon: <FileText className="text-blue-400" size={24} />,
       features: ['Job matching', 'Actionable insights', 'Open source'],
-      githubUrl: 'https://github.com/prinssayja',
-      liveUrl: 'https://github.com/prinssayja',
+      //githubUrl: 'https://github.com/prinssayja',
+      //liveUrl: 'https://github.com/prinssayja',
     },
     {
       title: '📊 Customer Churn Prediction Dashboard',
@@ -34,8 +34,8 @@ const Projects: React.FC<ProjectsProps> = ({ darkMode }) => {
       tech: ['Python', 'Streamlit', 'XGBoost', 'Random Forest', 'Data Visualization'],
       icon: <TrendingUp className="text-green-400" size={24} />,
       features: ['Interactive dashboard', 'Real-time predictions', 'Model comparison'],
-      githubUrl: 'https://github.com/prinssayja',
-      liveUrl: 'https://streamlit.io',
+     // githubUrl: 'https://github.com/prinssayja',
+      //liveUrl: 'https://streamlit.io',
     },
     {
       title: '🤖 AI/Data Prototypes (Open Source)',
@@ -44,7 +44,7 @@ const Projects: React.FC<ProjectsProps> = ({ darkMode }) => {
       tech: ['Python', 'Streamlit', 'OpenAI API', 'Data Visualization'],
       icon: <Brain className="text-pink-400" size={24} />,
       features: ['API integration', 'Real-time insights', 'Open source'],
-      githubUrl: 'https://github.com/prinssayja',
+      //githubUrl: 'https://github.com/prinssayja',
     },
   ];
 
