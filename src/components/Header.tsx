@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
           <div className="flex items-center space-x-2 text-2xl font-bold">
             <Bot className={darkMode ? "text-purple-400" : "text-purple-600"} size={32} />
             <span className={darkMode ? "text-white" : "text-gray-900"}>Prins</span>
-            <span className={darkMode ? "text-purple-400" : "text-purple-600"}>AI</span>
+            <span className={darkMode ? "text-purple-400" : "text-purple-600"}>Sayja</span>
           </div>
           
           {/* Desktop Navigation */}
