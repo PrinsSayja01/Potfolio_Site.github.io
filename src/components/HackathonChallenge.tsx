@@ -1,4 +1,4 @@
-/*import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Code, Trophy, Timer, Zap, CheckCircle, XCircle } from 'lucide-react';
 
 interface HackathonChallengeProps {
@@ -63,7 +63,6 @@ console.log(typeof getData());`,
       question: 'What\'s wrong with this ML preprocessing code?',
       code: `from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
@@ -85,11 +84,9 @@ X_test_scaled = scaler.fit_transform(X_test)`,
       question: 'What happens when this component renders?',
       code: `function Counter() {
   const [count, setCount] = useState(0);
-  
   useEffect(() => {
     setCount(count + 1);
   }, [count]);
-  
   return <div>{count}</div>;
 }`,
       options: [
@@ -126,11 +123,9 @@ X_test_scaled = scaler.fit_transform(X_test)`,
   const handleAnswer = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
     setShowResult(true);
-    
     if (answerIndex === challenges[currentChallenge].correct) {
       setScore(score + 1);
     }
-
     setTimeout(() => {
       if (currentChallenge < challenges.length - 1) {
         setCurrentChallenge(currentChallenge + 1);
@@ -181,7 +176,6 @@ X_test_scaled = scaler.fit_transform(X_test)`,
             }`}>
               Test your coding skills with challenges inspired by my GitHub projects!
             </p>
-
             <div className={`p-8 rounded-xl border mb-8 ${
               darkMode 
                 ? 'bg-slate-900/50 border-purple-500/20' 
@@ -204,7 +198,6 @@ X_test_scaled = scaler.fit_transform(X_test)`,
                   <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Instant Results</p>
                 </div>
               </div>
-
               <div className="mb-6">
                 <h4 className={`font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                   Topics Covered:
@@ -224,7 +217,6 @@ X_test_scaled = scaler.fit_transform(X_test)`,
                   ))}
                 </div>
               </div>
-
               <button
                 onClick={startGame}
                 className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 flex items-center justify-center space-x-2 mx-auto shadow-lg hover:shadow-xl transform hover:-translate-y-1"
@@ -254,13 +246,11 @@ X_test_scaled = scaler.fit_transform(X_test)`,
               <Trophy className={`mx-auto mb-4 ${
                 score >= challenges.length * 0.75 ? 'text-yellow-400' : 'text-gray-400'
               }`} size={64} />
-              
               <h2 className={`text-3xl font-bold mb-4 ${
                 darkMode ? 'text-white' : 'text-gray-900'
               }`}>
                 Challenge Complete! 🎉
               </h2>
-              
               <div className="text-6xl font-bold mb-4">
                 <span className={score >= challenges.length * 0.75 ? 'text-green-400' : 'text-purple-400'}>
                   {score}
@@ -269,13 +259,11 @@ X_test_scaled = scaler.fit_transform(X_test)`,
                   /{challenges.length}
                 </span>
               </div>
-              
               <p className={`text-xl mb-6 ${
                 darkMode ? 'text-gray-300' : 'text-gray-600'
               }`}>
                 {getScoreMessage()}
               </p>
-              
               <div className="grid md:grid-cols-2 gap-4 mb-6">
                 <div className={`p-4 rounded-lg ${
                   darkMode ? 'bg-slate-800' : 'bg-gray-100'
@@ -298,7 +286,6 @@ X_test_scaled = scaler.fit_transform(X_test)`,
                   </p>
                 </div>
               </div>
-              
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={startGame}
@@ -332,7 +319,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
     } backdrop-blur-sm`}>
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
-          {/* Header */} /*
+          {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -357,7 +344,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
             </div>
           </div>
 
-          {/* Challenge */}/*
+          {/* Challenge */}
           <div className={`p-8 rounded-xl border mb-6 ${
             darkMode 
               ? 'bg-slate-900/50 border-purple-500/20' 
@@ -368,19 +355,18 @@ X_test_scaled = scaler.fit_transform(X_test)`,
             }`}>
               {challenge.title}
             </h3>
-            
             <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               {challenge.question}
             </p>
 
-            {/* Code Block */}/*
+            {/* Code Block */}
             <div className={`p-4 rounded-lg mb-6 font-mono text-sm overflow-x-auto ${
               darkMode ? 'bg-slate-800 text-green-400' : 'bg-gray-900 text-green-300'
             }`}>
               <pre>{challenge.code}</pre>
             </div>
 
-            {/* Options */}/*
+            {/* Options */}
             <div className="grid gap-3">
               {challenge.options.map((option, index) => (
                 <button
@@ -417,7 +403,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
               ))}
             </div>
 
-            {/* Explanation */}/*
+            {/* Explanation */}
             {showResult && (
               <div className={`mt-6 p-4 rounded-lg ${
                 darkMode ? 'bg-blue-900/30 border-blue-500/20' : 'bg-blue-50 border-blue-200'
@@ -434,7 +420,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
             )}
           </div>
 
-          {/* Progress Bar */}/*
+          {/* Progress Bar */}
           <div className={`w-full rounded-full h-2 ${
             darkMode ? 'bg-gray-700' : 'bg-gray-200'
           }`}>
@@ -449,4 +435,4 @@ X_test_scaled = scaler.fit_transform(X_test)`,
   );
 };
 
-export default HackathonChallenge; 
+export default HackathonChallenge;
