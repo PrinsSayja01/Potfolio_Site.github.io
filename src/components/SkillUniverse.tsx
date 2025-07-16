@@ -678,4 +678,76 @@ const SkillUniverse: React.FC<SkillUniverseProps> = ({ darkMode }) => {
                 {selectedSkill.icon}
               </div>
               <div>
-                <h3 className={`text-2xl font-bold ${darkMode
+                // Around line 681, change this:
+<h3 className={`text-2xl font-bold ${darkMode
+
+// To this:
+<h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+
+// Or if you want to keep it simple and consistent with your dark theme:
+<h3 className="text-2xl font-bold text-white">
+
+// The complete modal section should look like this:
+{selectedSkill && (
+  <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+    <div className={`max-w-2xl w-full rounded-xl p-8 ${
+      darkMode ? 'bg-slate-800' : 'bg-white'
+    }`}>
+      <div className="flex items-center mb-6">
+        <div 
+          className="p-4 rounded-lg mr-4"
+          style={{ backgroundColor: selectedSkill.color + '20', color: selectedSkill.color }}
+        >
+          {selectedSkill.icon}
+        </div>
+        <div>
+          <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            {selectedSkill.name}
+          </h3>
+          <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            {selectedSkill.category}
+          </p>
+        </div>
+        <button
+          onClick={() => setSelectedSkill(null)}
+          className="ml-auto p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white"
+        >
+          ×
+        </button>
+      </div>
+      
+      <div className="mb-6">
+        <div className="flex justify-between text-sm mb-2">
+          <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>Proficiency Level</span>
+          <span className="text-cyan-400 font-semibold">{selectedSkill.level}%</span>
+        </div>
+        <div className="w-full bg-gray-700 rounded-full h-3">
+          <div
+            className="h-3 rounded-full transition-all duration-1000 bg-gradient-to-r from-cyan-400 to-blue-500"
+            style={{ width: `${selectedSkill.level}%` }}
+          />
+        </div>
+      </div>
+      
+      <p className={`text-lg mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+        {selectedSkill.description}
+      </p>
+      
+      <div className="mb-6">
+        <h4 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+          Featured Projects
+        </h4>
+        <div className="space-y-2">
+          {selectedSkill.projects.map((project, idx) => (
+            <div
+              key={idx}
+              className="px-3 py-2 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
+            >
+              {project}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
