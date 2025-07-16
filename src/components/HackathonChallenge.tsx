@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/*import React, { useState, useEffect } from 'react';
 import { Code, Trophy, Timer, Zap, CheckCircle, XCircle } from 'lucide-react';
 
 interface HackathonChallengeProps {
@@ -332,7 +332,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
     } backdrop-blur-sm`}>
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
+          {/* Header */} /*
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -357,7 +357,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
             </div>
           </div>
 
-          {/* Challenge */}
+          {/* Challenge */}/*
           <div className={`p-8 rounded-xl border mb-6 ${
             darkMode 
               ? 'bg-slate-900/50 border-purple-500/20' 
@@ -373,14 +373,14 @@ X_test_scaled = scaler.fit_transform(X_test)`,
               {challenge.question}
             </p>
 
-            {/* Code Block */}
+            {/* Code Block */}/*
             <div className={`p-4 rounded-lg mb-6 font-mono text-sm overflow-x-auto ${
               darkMode ? 'bg-slate-800 text-green-400' : 'bg-gray-900 text-green-300'
             }`}>
               <pre>{challenge.code}</pre>
             </div>
 
-            {/* Options */}
+            {/* Options */}/*
             <div className="grid gap-3">
               {challenge.options.map((option, index) => (
                 <button
@@ -417,7 +417,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
               ))}
             </div>
 
-            {/* Explanation */}
+            {/* Explanation */}/*
             {showResult && (
               <div className={`mt-6 p-4 rounded-lg ${
                 darkMode ? 'bg-blue-900/30 border-blue-500/20' : 'bg-blue-50 border-blue-200'
@@ -434,7 +434,7 @@ X_test_scaled = scaler.fit_transform(X_test)`,
             )}
           </div>
 
-          {/* Progress Bar */}
+          {/* Progress Bar */}/*
           <div className={`w-full rounded-full h-2 ${
             darkMode ? 'bg-gray-700' : 'bg-gray-200'
           }`}>
@@ -449,4 +449,4 @@ X_test_scaled = scaler.fit_transform(X_test)`,
   );
 };
 
-export default HackathonChallenge;
+export default HackathonChallenge; 
