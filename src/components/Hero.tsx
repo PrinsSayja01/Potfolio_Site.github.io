@@ -117,7 +117,7 @@ const Hero: React.FC<HeroProps> = ({ darkMode }) => {
 
           <div className="flex justify-center space-x-6 animate-fade-in delay-1000">
             <a
-              href="https://github.com/prinssayja"
+              href="https://github.com/prinssayja01"
               target="_blank"
               rel="noopener noreferrer"
               className={`transition-all duration-300 transform hover:scale-110 p-3 rounded-full ${
@@ -129,7 +129,7 @@ const Hero: React.FC<HeroProps> = ({ darkMode }) => {
               <Github size={28} />
             </a>
             <a
-              href="https://linkedin.com/in/prinssayja"
+              href="https://www.linkedin.com/in/connect-with-prins-sayja/"
               target="_blank"
               rel="noopener noreferrer"
               className={`transition-all duration-300 transform hover:scale-110 p-3 rounded-full ${
