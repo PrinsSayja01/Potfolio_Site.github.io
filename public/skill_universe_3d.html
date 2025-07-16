@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌌 3D Skill Universe</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            overflow: hidden;
+            color: white;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 300px;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            z-index: 100;
+        }
+
+        #skill-details {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 350px;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            z-index: 100;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        #skill-details.active {
+            transform: translateX(0);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .skill-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #64ffda;
+        }
+
+        .skill-category {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .proficiency-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .proficiency-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #64ffda, #4fc3f7);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .skill-description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 10px 0;
+            color: #ccc;
+        }
+
+        .projects-list {
+            margin-top: 15px;
+        }
+
+        .project-item {
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 5px 0;
+            font-size: 0.8rem;
+            border-left: 3px solid #64ffda;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            color: #64ffda;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            background: rgba(100, 255, 218, 0.2);
+            border-color: #64ffda;
+        }
+
+        .control-btn.active {
+            background: rgba(100, 255, 218, 0.3);
+            border-color: #64ffda;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #64ffda;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        h2 {
+            color: #64ffda;
+            margin-bottom: 15px;
+        }
+
+        .info-text {
+            color: #ccc;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .control-text {
+            color: #64ffda;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading AI Skill Universe...</p>
+    </div>
+
+    <div id="canvas-container">
+        <div id="info-panel">
+            <h2>🤖 AI Skill Universe</h2>
+            <p class="info-text">Meet Prins - an AI-powered professional standing at the center of his expertise galaxy. Each planet represents a core technical competency, orbiting around his AI intelligence and innovation.</p>
+            <br>
+            <p class="control-text">🖱️ <strong>Click</strong> planets to explore skills</p>
+            <p class="control-text">🎯 <strong>Drag</strong> to rotate view</p>
+            <p class="control-text">⚡ <strong>Scroll</strong> to zoom in/out</p>
+            <p class="control-text">🤖 <strong>AI Persona</strong> commands the center</p>
+        </div>
+
+        <div id="skill-details">
+            <div class="skill-header">
+                <div class="skill-icon">🐍</div>
+                <div>
+                    <div class="skill-title">Select a Planet</div>
+                    <div class="skill-category">Click on any planet to explore</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn active" id="auto-rotate">🔄 Auto Rotate</button>
+            <button class="control-btn" id="reset-view">🎯 Reset View</button>
+            <button class="control-btn" id="toggle-labels">🏷️ Labels</button>
+        </div>
+    </div>
+
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Skill data with your actual skills
+        const skills = [
+            {
+                name: "Python Ecosystem",
+                category: "Programming Languages",
+                proficiency: 95,
+                icon: "🐍",
+                color: 0x8b5cf6,
+                description: "NumPy, Pandas, Scikit-learn - Core data science stack",
+                projects: ["Gender & Age Detection", "Resume Analyzer", "Customer Churn Prediction"]
+            },
+            {
+                name: "AI & Deep Learning",
+                category: "AI/Data Science",
+                proficiency: 92,
+                icon: "🧠",
+                color: 0x06b6d4,
+                description: "CNNs, RNNs, TensorFlow, PyTorch - Advanced neural networks",
+                projects: ["Gender Detection (92% accuracy)", "Computer Vision Projects", "NLP Applications"]
+            },
+            {
+                name: "Computer Vision",
+                category: "AI Specialization",
+                proficiency: 90,
+                icon: "👁️",
+                color: 0xec4899,
+                description: "OpenCV, Real-time detection, Image processing",
+                projects: ["Gender & Age Detection (GitHub)", "Age/Gender Classification", "Live Video Processing"]
+            },
+            {
+                name: "Web Technologies",
+                category: "Full-Stack Development",
+                proficiency: 85,
+                icon: "🌐",
+                color: 0x10b981,
+                description: "React, Angular, Node.js - Modern web development",
+                projects: ["Twinnet Technology Apps", "Portfolio Website", "Interactive Dashboards"]
+            },
+            {
+                name: "Cloud & MLOps",
+                category: "Cloud Technologies",
+                proficiency: 80,
+                icon: "☁️",
+                color: 0xf59e0b,
+                description: "AWS SageMaker, GCP AI Platform, Docker, CI/CD pipelines",
+                projects: ["Model Deployment", "Cloud Architecture", "Scalable ML Systems"]
+            },
+            {
+                name: "Data Engineering",
+                category: "Data & Analytics",
+                proficiency: 88,
+                icon: "📊",
+                color: 0x8b5cf6,
+                description: "SQL, Data Pipelines, Model Optimization, A/B Testing",
+                projects: ["Customer Analytics", "Data Preprocessing", "Feature Engineering"]
+            },
+            {
+                name: "Tools & Frameworks",
+                category: "Development Tools",
+                proficiency: 85,
+                icon: "🔧",
+                color: 0xf97316,
+                description: "Git, Streamlit, Tableau, Firebase - Professional toolkit",
+                projects: ["Interactive Dashboards", "Data Visualization", "Version Control"]
+            },
+            {
+                name: "Programming Languages",
+                category: "Core Languages",
+                proficiency: 87,
+                icon: "💻",
+                color: 0x06b6d4,
+                description: "Java, SQL, R - Multi-language proficiency",
+                projects: ["Backend Development", "Database Management", "Statistical Analysis"]
+            }
+        ];
+
+        // Create planets and orbits
+        const planets = [];
+        const orbits = [];
+        let autoRotate = true;
+        let showLabels = false;
+
+        // Create glowing platform where the AI persona stands
+        const platformGeometry = new THREE.CylinderGeometry(2.5, 2.5, 0.2, 32);
+        const platformMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x2c3e50,
+            transparent: true,
+            opacity: 0.8
+        });
+        const platform = new THREE.Mesh(platformGeometry, platformMaterial);
+        platform.position.y = -0.5;
+        scene.add(platform);
+
+        // Add platform glow effect
+        const platformGlowGeometry = new THREE.CylinderGeometry(2.8, 2.8, 0.1, 32);
+        const platformGlowMaterial = new THREE.MeshBasicMaterial({
+            color: 0x64ffda,
+            transparent: true,
+            opacity: 0.3
+        });
+        const platformGlow = new THREE.Mesh(platformGlowGeometry, platformGlowMaterial);
+        platformGlow.position.y = -0.45;
+        scene.add(platformGlow);
+
+        // Create detailed male AI persona
+        const aiPersona = new THREE.Group();
+        
+        // Body - professional appearance
+        const bodyGeometry = new THREE.CylinderGeometry(0.25, 0.3, 1.2, 12);
+        const bodyMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x2c3e50, // Professional dark suit
+            transparent: true,
+            opacity: 0.9
+        });
+        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        body.position.y = 0.3;
+        aiPersona.add(body);
+        
+        // Head - realistic proportions
+        const headGeometry = new THREE.SphereGeometry(0.25, 16, 16);
+        const headMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xe8b894, // Realistic skin tone
+            transparent: true,
+            opacity: 0.95
+        });
+        const head = new THREE.Mesh(headGeometry, headMaterial);
+        head.position.y = 1.1;
+        aiPersona.add(head);
+        
+        // Glowing cyan AI eyes that pulse
+        const eyeGeometry = new THREE.SphereGeometry(0.03, 8, 8);
+        const eyeMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x00ffff, // Cyan AI eyes
+            transparent: true,
+            opacity: 0.9
+        });
+        
+        const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        leftEye.position.set(-0.08, 1.15, 0.2);
+        aiPersona.add(leftEye);
+        
+        const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        rightEye.position.set(0.08, 1.15, 0.2);
+        aiPersona.add(rightEye);
+        
+        // Arms - proper proportions
+        const armGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.8, 8);
+        const armMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xe8b894, // Skin tone for arms
+            transparent: true,
+            opacity: 0.9
+        });
+        
+        const leftArm = new THREE.Mesh(armGeometry, armMaterial);
+        leftArm.position.set(-0.4, 0.5, 0);
+        leftArm.rotation.z = 0.2;
+        aiPersona.add(leftArm);
+        
+        const rightArm = new THREE.Mesh(armGeometry, armMaterial);
+        rightArm.position.set(0.4, 0.5, 0);
+        rightArm.rotation.z = -0.2;
+        aiPersona.add(rightArm);
+        
+        // Hands - detailed
+        const handGeometry = new THREE.SphereGeometry(0.06, 8, 8);
+        const handMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xe8b894,
+            transparent: true,
+            opacity: 0.9
+        });
+        
+        const leftHand = new THREE.Mesh(handGeometry, handMaterial);
+        leftHand.position.set(-0.5, 0.1, 0);
+        aiPersona.add(leftHand);
+        
+        const rightHand = new THREE.Mesh(handGeometry, handMaterial);
+        rightHand.position.set(0.5, 0.1, 0);
+        aiPersona.add(rightHand);
+        
+        // Legs - professional appearance
+        const legGeometry = new THREE.CylinderGeometry(0.12, 0.12, 1.0, 8);
+        const legMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x34495e, // Professional pants
+            transparent: true,
+            opacity: 0.9
+        });
+        
+        const leftLeg = new THREE.Mesh(legGeometry, legMaterial);
+        leftLeg.position.set(-0.15, -0.8, 0);
+        aiPersona.add(leftLeg);
+        
+        const rightLeg = new THREE.Mesh(legGeometry, legMaterial);
+        rightLeg.position.set(0.15, -0.8, 0);
+        aiPersona.add(rightLeg);
+        
+        // Feet - professional shoes
+        const footGeometry = new THREE.BoxGeometry(0.15, 0.08, 0.25);
+        const footMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x2c3e50, // Professional shoes
+            transparent: true,
+            opacity: 0.9
+        });
+        
+        const leftFoot = new THREE.Mesh(footGeometry, footMaterial);
+        leftFoot.position.set(-0.15, -1.35, 0.05);
+        aiPersona.add(leftFoot);
+        
+        const rightFoot = new THREE.Mesh(footGeometry, footMaterial);
+        rightFoot.position.set(0.15, -1.35, 0.05);
+        aiPersona.add(rightFoot);
+        
+        // AI Energy field - wireframe sphere around entire body
+        const energyFieldGeometry = new THREE.SphereGeometry(1.2, 16, 16);
+        const energyFieldMaterial = new THREE.MeshBasicMaterial({
+            color: 0x64ffda,
+            transparent: true,
+            opacity: 0.08,
+            wireframe: true
+        });
+        const energyField = new THREE.Mesh(energyFieldGeometry, energyFieldMaterial);
+        energyField.position.y = 0.2;
+        aiPersona.add(energyField);
+        
+        // Neural network visualization - wireframe sphere around head
+        const neuralGeometry = new THREE.SphereGeometry(0.4, 8, 8);
+        const neuralMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ffff,
+            transparent: true,
+            opacity: 0.15,
+            wireframe: true
+        });
+        const neuralNetwork = new THREE.Mesh(neuralGeometry, neuralMaterial);
+        neuralNetwork.position.y = 1.1;
+        aiPersona.add(neuralNetwork);
+        
+        // Position AI persona on platform
+        aiPersona.position.y = -0.4;
+        scene.add(aiPersona);
+
+        // Create data streams - flowing cyan particles around the persona
+        const streamGeometry = new THREE.BufferGeometry();
+        const streamCount = 50;
+        const streamPositions = new Float32Array(streamCount * 3);
+        const streamColors = new Float32Array(streamCount * 3);
+        
+        for (let i = 0; i < streamCount * 3; i += 3) {
+            const radius = 2 + Math.random() * 1.5;
+            const theta = Math.random() * Math.PI * 2;
+            const y = (Math.random() - 0.5) * 3;
+            
+            streamPositions[i] = radius * Math.cos(theta);
+            streamPositions[i + 1] = y;
+            streamPositions[i + 2] = radius * Math.sin(theta);
+            
+            // Cyan data stream colors
+            streamColors[i] = 0.4;     // R
+            streamColors[i + 1] = 1.0; // G
+            streamColors[i + 2] = 1.0; // B
+        }
+        
+        streamGeometry.setAttribute('position', new THREE.BufferAttribute(streamPositions, 3));
+        streamGeometry.setAttribute('color', new THREE.BufferAttribute(streamColors, 3));
+        const streamMaterial = new THREE.PointsMaterial({
+            size: 0.08,
+            transparent: true,
+            opacity: 0.7,
+            vertexColors: true
+        });
+        const dataStreams = new THREE.Points(streamGeometry, streamMaterial);
+        scene.add(dataStreams);
+
+        // Create platform details/patterns
+        const ringGeometry = new THREE.RingGeometry(1.8, 2.0, 32);
+        const ringMaterial = new THREE.MeshBasicMaterial({
+            color: 0x64ffda,
+            transparent: true,
+            opacity: 0.6,
+            side: THREE.DoubleSide
+        });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = -0.35;
+        scene.add(ring);
+
+        // Create smaller AI core sun positioned above as inspiration/guidance
+        const sunGeometry = new THREE.SphereGeometry(0.6, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x64ffda, // Cyan theme
+            transparent: true,
+            opacity: 0.7
+        });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        sun.position.y = 4;
+        scene.add(sun);
+
+        // Add glow effect to sun
+        const sunGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(0.8, 32, 32),
+            new THREE.MeshBasicMaterial({
+                color: 0x64ffda,
+                transparent: true,
+                opacity: 0.2
+            })
+        );
+        sunGlow.position.y = 4;
+        scene.add(sunGlow);
+
+        // Create skills planets that orbit around the AI persona
+        skills.forEach((skill, index) => {
+            // Planet sized by proficiency level
+            const size = 0.3 + (skill.proficiency / 100) * 0.5;
+            const geometry = new THREE.SphereGeometry(size, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: skill.color,
+                transparent: true,
+                opacity: 0.9
+            });
+            const planet = new THREE.Mesh(geometry, material);
+            
+            // Position planets in orbital formation around AI persona
+            const orbitRadius = 4 + (index % 3) * 1.5; // Varied orbital distances
+            const angle = (index / skills.length) * Math.PI * 2;
+            planet.position.x = Math.cos(angle) * orbitRadius;
+            planet.position.z = Math.sin(angle) * orbitRadius;
+            planet.position.y = (Math.random() - 0.5) * 2; // Varied heights
+            planet.userData = { skill: skill, index: index, orbitRadius: orbitRadius };
+            
+            // Add glow effect to planets
+            const glowGeometry = new THREE.SphereGeometry(size * 1.3, 16, 16);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: skill.color,
+                transparent: true,
+                opacity: 0.3
+            });
+            const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+            glow.position.copy(planet.position);
+            
+            // Create text labels
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 512;
+            canvas.height = 128;
+            
+            // Configure text
+            context.fillStyle = 'rgba(0, 0, 0, 0)';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.font = 'bold 36px Arial';
+            context.fillStyle = '#64ffda';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            
+            // Add text shadow for better readability
+            context.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            context.shadowBlur = 8;
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            
+            // Draw skill name
+            const skillName = skill.name.length > 15 ? skill.name.substring(0, 15) + '...' : skill.name;
+            context.fillText(skillName, canvas.width / 2, canvas.height / 2);
+            
+            // Create texture and material
+            const texture = new THREE.CanvasTexture(canvas);
+            const labelMaterial = new THREE.SpriteMaterial({ 
+                map: texture,
+                transparent: true,
+                opacity: 0.9
+            });
+            const label = new THREE.Sprite(labelMaterial);
+            label.scale.set(4, 1, 1);
+            label.position.set(planet.position.x, planet.position.y + size + 1, planet.position.z);
+            
+            scene.add(planet);
+            scene.add(glow);
+            scene.add(label);
+            planets.push({ planet, glow, skill, label });
+
+            // Create subtle orbit paths
+            const orbitGeometry = new THREE.RingGeometry(orbitRadius - 0.05, orbitRadius + 0.05, 64);
+            const orbitMaterial = new THREE.MeshBasicMaterial({
+                color: 0x64ffda,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.DoubleSide
+            });
+            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+            orbit.rotation.x = -Math.PI / 2;
+            scene.add(orbit);
+            orbits.push(orbit);
+        });
+
+        // Add starfield background
+        const starGeometry = new THREE.BufferGeometry();
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
+        const starVertices = [];
+        
+        for (let i = 0; i < 1000; i++) {
+            const x = (Math.random() - 0.5) * 200;
+            const y = (Math.random() - 0.5) * 200;
+            const z = (Math.random() - 0.5) * 200;
+            starVertices.push(x, y, z);
+        }
+        
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        // Camera controls
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let cameraDistance = 20;
+        let cameraAngleX = 0;
+        let cameraAngleY = 0;
+
+        // Mouse controls
+        renderer.domElement.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        renderer.domElement.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const deltaMove = {
+                    x: e.clientX - previousMousePosition.x,
+                    y: e.clientY - previousMousePosition.y
+                };
+                
+                cameraAngleY += deltaMove.x * 0.01;
+                cameraAngleX += deltaMove.y * 0.01;
+                cameraAngleX = Math.max(-Math.PI/2, Math.min(Math.PI/2, cameraAngleX));
+                
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            }
+        });
+
+        renderer.domElement.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        renderer.domElement.addEventListener('wheel', (e) => {
+            cameraDistance += e.deltaY * 0.01;
+            cameraDistance = Math.max(5, Math.min(50, cameraDistance));
+        });
+
+        // Click detection for planets
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        renderer.domElement.addEventListener('click', (e) => {
+            if (isDragging) return;
+            
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            const planetMeshes = planets.map(p => p.planet);
+            const intersects = raycaster.intersectObjects(planetMeshes);
+            
+            if (intersects.length > 0) {
+                const skill = intersects[0].object.userData.skill;
+                showSkillDetails(skill);
+            }
+        });
+
+        // Show skill details function
+        function showSkillDetails(skill) {
+            const detailsPanel = document.getElementById('skill-details');
+            const iconMap = {
+                "Python Ecosystem": "🐍",
+                "AI & Deep Learning": "🧠",
+                "Computer Vision": "👁️",
+                "Web Technologies": "🌐",
+                "Cloud & MLOps": "☁️",
+                "Data Engineering": "📊",
+                "Tools & Frameworks": "🔧",
+                "Programming Languages": "💻"
+            };
+            
+            detailsPanel.innerHTML = `
+                <div class="skill-header">
+                    <div class="skill-icon">${iconMap[skill.name]}</div>
+                    <div>
+                        <div class="skill-title">${skill.name}</div>
+                        <div class="skill-category">${skill.category}</div>
+                    </div>
+                </div>
+                <div class="proficiency-bar">
+                    <div class="proficiency-fill" style="width: ${skill.proficiency}%"></div>
+                </div>
+                <div style="text-align: right; font-size: 0.9rem; color: #64ffda; margin-top: 5px;">
+                    Proficiency: ${skill.proficiency}%
+                </div>
+                <div class="skill-description">${skill.description}</div>
+                <div class="projects-list">
+                    <strong>Key Projects:</strong>
+                    ${skill.projects.map(project => `<div class="project-item">${project}</div>`).join('')}
+                </div>
+            `;
+            
+            detailsPanel.classList.add('active');
+        }
+
+        // Control buttons
+        document.getElementById('auto-rotate').addEventListener('click', (e) => {
+            autoRotate = !autoRotate;
+            e.target.classList.toggle('active');
+        });
+
+        document.getElementById('reset-view').addEventListener('click', () => {
+            cameraDistance = 20;
+            cameraAngleX = 0;
+            cameraAngleY = 0;
+        });
+
+        document.getElementById('toggle-labels').addEventListener('click', (e) => {
+            showLabels = !showLabels;
+            e.target.classList.toggle('active');
+            
+            // Toggle label visibility
+            planets.forEach(planetData => {
+                planetData.label.visible = showLabels;
+            });
+        });
+
+        // Main animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.001;
+            
+            // Auto rotate scene
+            if (autoRotate) {
+                cameraAngleY += 0.003; // Slower, more majestic
+            }
+            
+            // Update camera position
+            camera.position.x = Math.cos(cameraAngleY) * Math.cos(cameraAngleX) * cameraDistance;
+            camera.position.y = Math.sin(cameraAngleX) * cameraDistance;
+            camera.position.z = Math.sin(cameraAngleY) * Math.cos(cameraAngleX) * cameraDistance;
+            camera.lookAt(0, 0, 0);
+            
+            // Animate planets orbiting around the AI persona
+            planets.forEach((planetData, index) => {
+                const speed = 0.1 + (index * 0.05); // Slower, more elegant movement
+                const skill = planetData.skill;
+                const orbitRadius = planetData.planet.userData.orbitRadius;
+                
+                // Orbital animation around AI persona
+                const angle = time * speed + (index * Math.PI * 2) / skills.length;
+                
+                planetData.planet.position.x = Math.cos(angle) * orbitRadius;
+                planetData.planet.position.z = Math.sin(angle) * orbitRadius;
+                // Vertical floating - gentle rise and fall
+                planetData.planet.position.y = Math.sin(time * 1.2 + index) * 0.5;
+                
+                planetData.glow.position.copy(planetData.planet.position);
+                
+                // Update label position to follow planet
+                const planetSize = 0.3 + (skill.proficiency / 100) * 0.5;
+                planetData.label.position.set(
+                    planetData.planet.position.x,
+                    planetData.planet.position.y + planetSize + 1,
+                    planetData.planet.position.z
+                );
+                
+                // Make labels always face camera
+                planetData.label.lookAt(camera.position);
+                
+                // Planet self-rotation
+                planetData.planet.rotation.y += 0.01;
+                
+                // Pulsing glow effect
+                planetData.glow.material.opacity = 0.3 + Math.sin(time * 2 + index) * 0.1;
+            });
+            
+            // Animate AI persona
+            // Gentle swaying - natural standing posture
+            aiPersona.rotation.y = Math.sin(time * 0.3) * 0.1;
+            
+            // Breathing animation - subtle chest movement
+            const breathScale = 1 + Math.sin(time * 1.5) * 0.03;
+            aiPersona.children.forEach((child, index) => {
+                if (index === 0) { // Body
+                    child.scale.y = breathScale;
+                }
+            });
+            
+            // Glowing eyes that pulse with AI intelligence
+            const eyeIntensity = 0.7 + Math.sin(time * 3) * 0.3;
+            aiPersona.children.forEach((child) => {
+                if (child.material && child.material.color.getHex() === 0x00ffff) {
+                    child.material.opacity = eyeIntensity;
+                }
+            });
+            
+            // Energy field rotation - representing AI capabilities
+            energyField.rotation.y += 0.004;
+            energyField.rotation.x += 0.002;
+            
+            // Neural network animation - showing AI processing
+            neuralNetwork.rotation.y += 0.008;
+            neuralNetwork.rotation.x += 0.006;
+            
+            // Animate AI core sun above
+            sun.rotation.y += 0.006;
+            sun.position.y = 4 + Math.sin(time * 0.6) * 0.1;
+            sunGlow.rotation.y -= 0.003;
+            sunGlow.position.y = sun.position.y;
+            sunGlow.material.opacity = 0.2 + Math.sin(time * 2) * 0.05;
+            
+            // Animate platform effects
+            platformGlow.material.opacity = 0.3 + Math.sin(time * 1.2) * 0.1;
+            ring.material.opacity = 0.6 + Math.sin(time * 1.8) * 0.1;
+            
+            // Animate data streams - continuous learning and information processing
+            dataStreams.rotation.y += 0.003;
+            const streamPositions = dataStreams.geometry.attributes.position.array;
+            for (let i = 1; i < streamPositions.length; i += 3) {
+                streamPositions[i] += Math.sin(time * 1.5 + i) * 0.001;
+            }
+            dataStreams.geometry.attributes.position.needsUpdate = true;
+            
+            // Animate starfield
+            stars.rotation.y += 0.0003;
+            
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Initialize camera position
+        camera.position.set(0, 5, 20);
+        camera.lookAt(0, 0, 0);
+
+        // Set initial label visibility
+        planets.forEach(planetData => {
+            planetData.label.visible = showLabels;
+        });
+
+        // Hide loading screen with fade effect
+        setTimeout(() => {
+            document.getElementById('loading').classList.add('fade-out');
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 500);
+        }, 1000);
+
+        // Start the animation
+        animate();
+    </script>
+</body>
+</html>
