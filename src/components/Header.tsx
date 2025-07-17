@@ -34,9 +34,11 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
         ? darkMode 
-          ? 'bg-slate-900/95 backdrop-blur-md shadow-lg border-b border-purple-500/20' 
-          : 'bg-white/95 backdrop-blur-md shadow-lg border-b border-purple-200/50'
-        : 'bg-transparent'
+          ? 'bg-slate-900/98 backdrop-blur-lg shadow-xl border-b border-purple-500/30' 
+          : 'bg-white/98 backdrop-blur-lg shadow-xl border-b border-purple-200/60'
+        : darkMode
+          ? 'bg-slate-900/80 backdrop-blur-md'
+          : 'bg-white/80 backdrop-blur-md'
     }`}>
       <div className="container mx-auto px-6 py-4">
         <nav className="flex items-center justify-between">

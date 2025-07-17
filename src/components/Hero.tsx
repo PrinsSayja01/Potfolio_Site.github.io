@@ -7,7 +7,7 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ darkMode }) => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
       {/* AI Circuit Background */}
       <div className="absolute inset-0 opacity-10">
         <div className={`absolute top-10 left-10 w-32 h-32 border-2 rounded-lg rotate-12 animate-circuit-glow ${
@@ -53,7 +53,7 @@ const Hero: React.FC<HeroProps> = ({ darkMode }) => {
 
       <div className="container mx-auto px-6 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-6 animate-fade-in">
+          <div className="mb-8 animate-fade-in mt-8">
             <span className={`inline-block px-6 py-3 rounded-full text-sm font-medium border transition-all duration-300 ${
               darkMode 
                 ? 'bg-purple-500/20 text-purple-300 border-purple-500/30' 
