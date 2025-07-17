@@ -197,6 +197,7 @@ const Contact: React.FC<ContactProps> = ({ darkMode }) => {
               </form>
             </div>
           </div>
+          </div>
         </div>
       </div>
     </section>
