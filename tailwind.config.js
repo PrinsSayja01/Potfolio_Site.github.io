@@ -134,6 +134,9 @@ export default {
         '88': '22rem',
         '128': '32rem',
       },
+      screens: {
+        'xs': '475px',
+      },
       backdropBlur: {
         xs: '2px',
       },
