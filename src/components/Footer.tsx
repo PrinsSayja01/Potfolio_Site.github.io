@@ -145,6 +145,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               © 2025 All rights reserved. 🚀 Currently based in Erlangen, Germany 🇩🇪
             </p>
           </div>
+          </div>
         </div>
       </div>
     </footer>
