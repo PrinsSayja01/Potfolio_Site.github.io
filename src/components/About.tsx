@@ -25,7 +25,7 @@ const About: React.FC<AboutProps> = ({ darkMode }) => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-            <div className="space-y-6">
+            <div className="space-y-6 order-2 md:order-1">
               <div className={`w-24 h-1 rounded-full ${
                 darkMode 
                   ? 'bg-gradient-to-r from-purple-500 to-pink-600' 
@@ -47,7 +47,7 @@ const About: React.FC<AboutProps> = ({ darkMode }) => {
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6 order-1 md:order-2">
               <div className={`p-6 rounded-xl border transition-all duration-300 group hover:scale-105 ${
                 darkMode 
                   ? 'bg-purple-900/30 border-purple-500/20 hover:border-purple-500/40' 
@@ -111,7 +111,7 @@ const About: React.FC<AboutProps> = ({ darkMode }) => {
           </div>
 
           {/* Languages & Achievements */}
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <div className={`p-6 rounded-xl border ${
               darkMode 
                 ? 'bg-slate-900/50 border-purple-500/20' 

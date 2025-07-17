@@ -5,7 +5,7 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import SkillUniverse from './components/SkillUniverse';
-import HackathonChallenge from './components/HackathonChallenge';
+// import HackathonChallenge from './components/HackathonChallenge';
 import AIPlayground from './components/AIPlayground';
 import TechTimeline from './components/TechTimeline';
 // import AITools from './components/AITools';
@@ -135,7 +135,7 @@ function App() {
       <Skills darkMode={darkMode} />
       <SkillUniverse darkMode={darkMode} />
       <Projects darkMode={darkMode} />
-      <HackathonChallenge darkMode={darkMode} />
+      {/* <HackathonChallenge darkMode={darkMode} /> */}
       <AIPlayground darkMode={darkMode} />
       <TechTimeline darkMode={darkMode} />
       {/* <AITools darkMode={darkMode} /> */}

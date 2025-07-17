@@ -462,6 +462,31 @@ textarea:focus {
   will-change: transform;
 }
 
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .animate-float,
+  .animate-float-delayed,
+  .animate-float-slow {
+    animation-duration: 4s;
+  }
+  
+  /* Reduce complex animations on mobile */
+  .animate-binary-rain,
+  .animate-data-flow,
+  .animate-neural-pulse {
+    animation-duration: 6s;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .animate-float,
+  .animate-float-delayed,
+  .animate-float-slow {
+    animation-duration: 5s;
+  }
+}
+
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,
@@ -471,6 +496,16 @@ textarea:focus {
   .animate-pulse-glow,
   .animate-gradient,
   .animate-matrix {
+    animation: none;
+  }
+  
+  /* Disable complex animations for better performance */
+  .animate-binary-rain,
+  .animate-data-flow,
+  .animate-neural-pulse,
+  .animate-circuit-glow,
+  .animate-hologram,
+  .animate-quantum-spin {
     animation: none;
   }
 }

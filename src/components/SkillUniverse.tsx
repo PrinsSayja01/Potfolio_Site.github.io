@@ -99,6 +99,18 @@ const SkillUniverse: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
   useEffect(() => {
     if (!mountRef.current) return;
 
+    // Throttle resize events for better performance
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (!camera || !renderer || !mountRef.current) return;
+        camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+      }, 100);
+    };
+
     // Scene Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
@@ -110,6 +122,7 @@ const SkillUniverse: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
     renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimize for mobile
     mountRef.current.appendChild(renderer.domElement);
 
     sceneRef.current = scene;
@@ -125,9 +138,11 @@ const SkillUniverse: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     scene.add(pointLight);
 
     // Stars background
+    // Reduce stars for better mobile performance
+    const starCount = window.innerWidth < 768 ? 300 : 1000;
     const starsGeometry = new THREE.BufferGeometry();
     const starVertices = [];
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < starCount; i++) {
       const x = (Math.random() - 0.5) * 200;
       const y = (Math.random() - 0.5) * 200;
       const z = (Math.random() - 0.5) * 200;
@@ -149,7 +164,9 @@ const SkillUniverse: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
 
     skills.forEach((skill, index) => {
       const size = 0.3 + (skill.proficiency / 100) * 0.5;
-      const geometry = new THREE.SphereGeometry(size, 16, 16);
+      // Reduce geometry complexity on mobile
+      const segments = window.innerWidth < 768 ? 8 : 16;
+      const geometry = new THREE.SphereGeometry(size, segments, segments);
       const material = new THREE.MeshBasicMaterial({
         color: parseInt(skill.color.replace('#', ''), 16),
         transparent: true,
@@ -165,7 +182,7 @@ const SkillUniverse: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
       planet.userData = { skill };
 
       // Glow effect
-      const glowGeometry = new THREE.SphereGeometry(size * 1.3, 16, 16);
+      const glowGeometry = new THREE.SphereGeometry(size * 1.3, segments, segments);
       const glowMaterial = new THREE.MeshBasicMaterial({
         color: parseInt(skill.color.replace('#', ''), 16),
         transparent: true,
@@ -299,8 +316,9 @@ const SkillUniverse: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     });
 
     // Animation Loop
+    let animationId: number;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
 
       const time = Date.now() * 0.001;
 
@@ -341,19 +359,11 @@ const SkillUniverse: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     animate();
     setIsLoaded(true);
 
-    // Resize handler
-    const handleResize = () => {
-      if (!camera || !renderer || !mountRef.current) return;
-      camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
-    };
-
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(requestAnimationFrame(animate));
+      cancelAnimationFrame(animationId);
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }

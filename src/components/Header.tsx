@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, toggleTheme }) => {
     { href: '#skills', label: 'Skills' },
     { href: '#skill-universe', label: 'Universe' },
     { href: '#projects', label: 'Projects' },
-    { href: '#hackathon-challenge', label: 'Challenge' },
+    // { href: '#hackathon-challenge', label: 'Challenge' },
     { href: '#ai-playground', label: 'AI Lab' },
     // { href: '#ai-tools', label: 'AI Tools' },
     { href: '#contact', label: 'Contact' },
