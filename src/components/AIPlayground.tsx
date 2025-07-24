@@ -592,7 +592,7 @@ Skills: Python, JavaScript, React, Machine Learning, AWS"
                         </div>
                       </div>
                       
-                      <div className="mt-6 text-center">
+                      /* <div className="mt-6 text-center">
                         <a
                           href="https://github.com/prinssayja"
                           target="_blank"
@@ -602,7 +602,7 @@ Skills: Python, JavaScript, React, Machine Learning, AWS"
                           <Play className="mr-2" size={18} />
                           View Live Dashboard
                         </a>
-                      </div>
+                      </div> */ 
                     </div>
                   </div>
                 </div>
