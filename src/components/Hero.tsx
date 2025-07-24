@@ -102,7 +102,7 @@ const Hero: React.FC<HeroProps> = ({ darkMode }) => {
               <Sparkles size={18} />
             </a>
             <a
-              href="/Prins_Sayja_resume.pdf"
+              href="/public/Prins_Sayja_resume.pdf"
               download
               className={`px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center space-x-2 border-2 ${
                 darkMode 
